@@ -12,7 +12,7 @@ export const fetchCategories = async () => {
       throw error;
     }
   };
-  // ?limit=20&skip=1
+ 
   export const fetchAllProducts = async (limit = 20, skip = 0) => {
     try {
       const response = await fetch(`${BASE_URL}/products?limit=${limit}&skip=${skip}`);
