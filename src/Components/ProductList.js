@@ -1,22 +1,14 @@
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const ProductList = ({data}) => {
-  
-  // console.log(JSON.stringify(data,null,2))
+const ProductList = ({ data }) => {
   return (
     <View>
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <View
-            style={styles.cardView}
-          >
-
-           
-            <View
-              style={styles.imageView}
-            >
+          <View style={styles.cardView}>
+            <View style={styles.imageView}>
               <Image
                 source={{ uri: item.images[0] }}
                 style={styles.productImage}
@@ -24,9 +16,31 @@ const ProductList = ({data}) => {
             </View>
 
             <View style={styles.cardHeaderView}>
-            <Text>{item.id}</Text>
               <Text style={styles.cardTitle}>{item.title}</Text>
               <Text numberOfLines={3}>{item.description}</Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Text>Rating</Text>
+                <Text>Stock</Text>
+                <Text>Price</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Text>{item.rating}</Text>
+                <Text>{item.stock}</Text>
+                <Text>{item.price} $</Text>
+              </View>
             </View>
           </View>
         )}
@@ -38,7 +52,7 @@ const ProductList = ({data}) => {
 export default ProductList;
 
 const styles = StyleSheet.create({
-  cardView:{
+  cardView: {
     backgroundColor: "#FFF",
     padding: 20,
     marginVertical: 10,
@@ -47,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 40,
   },
-  imageView:{
+  imageView: {
     borderRadius: 70,
     width: 70,
     height: 70,
@@ -59,6 +73,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
-  cardHeaderView:{flex:1,gap:10},
-  cardTitle:{fontSize:16,fontWeight:"700"}
+  cardHeaderView: { flex: 1, gap: 10 },
+  cardTitle: { fontSize: 16, fontWeight: "700" },
 });

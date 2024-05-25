@@ -20,53 +20,42 @@ const Home = () => {
   const [categoriesDatas, setCategoriesDatas] = useState([]);
   const [filteredProductsData, setFilteredProductsData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("Select Categories");
+  const [selectedCategory, setSelectedCategory] = useState("Select Category");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
 
   const CategoriesData = async () => {
-    try {
-      const categories = await fetchCategories();
-      setCategoriesDatas(categories);
-      setLoading(false);
-    } catch (error) {
-      console.log("Error is :", error);
-    }
+    setLoading(true);
+    const categories = await fetchCategories();
+    setCategoriesDatas(categories);
+    setLoading(false);
   };
 
   const AllProductsData = async (page = 0) => {
-    try {
-      setLoading(true);
-      const skip = page * 20;
-      const productsData = await fetchAllProducts(20, skip);
-      setFilteredProductsData(productsData.products);
-      setTotalProducts(productsData.total);
-      setLoading(false);
-    } catch (error) {
-      console.log("Error is :", error);
-    }
+    setLoading(true);
+    const skip = page * 20;
+    const productsData = await fetchAllProducts(20, skip);
+    setFilteredProductsData(productsData.products);
+    setTotalProducts(productsData.total);
+    setLoading(false);
   };
 
   const handleSelectCategory = async (category, page = 0) => {
-    try {
-      setLoading(true);
-      setSelectedCategory(category);
-      setCurrentPage(page); // Reset to first page when selecting a new category
-      const skip = page * 20;
-      const productsData = await fetchProductsByCategory(category, 20, skip);
-      setFilteredProductsData(productsData.products);
-      setTotalProducts(productsData.total);
-      setLoading(false);
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    setLoading(true);
+    setSelectedCategory(category);
+    setCurrentPage(page); 
+    const skip = page * 20;
+    const productsData = await fetchProductsByCategory(category, 20, skip);
+    setFilteredProductsData(productsData.products);
+    setTotalProducts(productsData.total);
+    setLoading(false);
   };
 
   const handlePageChange = async (pageNumber) => {
     if (pageNumber >= 0 && pageNumber * 20 < totalProducts) {
       setCurrentPage(pageNumber);
-      if (selectedCategory === "Select Categories") {
+      if (selectedCategory === "Select Category") {
         if (searchQuery) {
           await handleSearch(searchQuery, pageNumber);
         } else {
@@ -79,18 +68,14 @@ const Home = () => {
   };
 
   const handleSearch = async (query, page = 0) => {
-    try {
-      setLoading(true);
-      setSelectedCategory("Select Categories"); // Reset category to "All"
-      setCurrentPage(page); // Reset to first page when starting a new search
-      const skip = page * 20;
-      const productsData = await fetchProductsBySearchQuery(query, 20, skip);
-      setFilteredProductsData(productsData.products);
-      setTotalProducts(productsData.total);
-      setLoading(false);
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    setLoading(true);
+    setSelectedCategory("Select Category"); 
+    setCurrentPage(page); 
+    const skip = page * 20;
+    const productsData = await fetchProductsBySearchQuery(query, 20, skip);
+    setFilteredProductsData(productsData.products);
+    setTotalProducts(productsData.total);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -106,7 +91,7 @@ const Home = () => {
       } else {
         AllProductsData();
       }
-    }, 300); // Delay to debounce the search input
+    }, 300); 
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery]);
@@ -127,7 +112,7 @@ const Home = () => {
           style={styles.headerButton}
           onPress={() => {
             AllProductsData();
-            setSelectedCategory("Select Categories");
+            setSelectedCategory("Select Category");
           }}
         >
           <Text>All</Text>
@@ -181,6 +166,7 @@ const Home = () => {
                 style={{
                   borderWidth: 1,
                   padding: 5,
+                  borderRadius:10,
                   backgroundColor: page === currentPage + 1 ? "black" : "lightgray",
                 }}
                 onPress={() => handlePageChange(page - 1)}
@@ -239,5 +225,6 @@ const styles = StyleSheet.create({
   paginationButton: {
     borderWidth: 1,
     padding: 10,
+    borderRadius:15
   },
 });
